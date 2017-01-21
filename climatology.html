@@ -37,12 +37,11 @@
 
             var scatterplot = function() {
 
-              var svg = d3.select("body")
-                        .append("svg")
-                        .attr("width", w)
-                        .attr("height", h);
+                var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
 
-              //Create scale functions
                 var xScale = d3.scale.linear()
                     .domain([d3.min(dataset, function(d) { return d.x; }),
                             d3.max(dataset, function(d) { return d.x; })])
@@ -73,7 +72,6 @@
                             d3.max(dataset, function(d) { return d.bio12; })])
                     .range([h, 0]);
 
-
                 var button1 = svg.append("ellipse")
                     .attr("cx", w - 75)
                     .attr("cy", 75)
@@ -87,14 +85,6 @@
                     .attr("rx", 50)
                     .attr("ry", 50)
                     .attr("fill", "rgba(0,0,0,.1)");
-
-                var label1 = svg.append("text")
-                    .data("hello")
-                    .attr("x", w - 75)
-                    .attr("y", 75)
-
-
-
 
                 var id = function(d) {
                     return d.id;
@@ -112,8 +102,6 @@
                         return yScale(d.y);
                     })
                     .attr("fill", function(d) {
-                        //return "rgb(200, 0, 0)";
-                        //return "rgb(" + Math.round(colScaleX(d.bio1)) + ", 0, " + Math.round(colScaleY(d.bio12)) + ")";
                         return d.geoColor;
                     })
                     .attr("r", function(d) {
@@ -151,29 +139,19 @@
                         svg.selectAll("circle")
                             .data(dataset)
                             .transition()
-                            //.delay(function(d, i) {
-                            //    return i * 1;
-                            //})
                             .duration(1000)
                             .ease("linear")
                             .attr("fill", function(d) {
                                 return palette == "geo" ? d.geoColor : d.climColor;
                             });
-                        //console.log(palette);
                     }
                 }();
 
-
-
                 button1.on("click", stateChange);
-
                 button2.on("click", paletteChange);       
 
             }
-
-            
-
-            
+ 
             
         </script>
     </body>
