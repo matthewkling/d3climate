@@ -9,13 +9,16 @@
         </style>
     </head>
     <body>
-        <h1 style="color:gray; font-family:courier new;">   The world's climate </h1>
         <script type="text/javascript">
 
             //Width and height
-            var w = 1000;
-            var h = 500;
-            var padding = 100;
+            var xpx = 270; // longitude pixels in climate data
+            var ypx = 109; // latitude pixels
+            var m = 80; // top margin
+            var pad = 5;
+            var w = document.body.clientWidth - pad*2;
+            var hf = document.body.scrollHeight - pad*4 - m;
+            var h = Math.round(w * ypx / xpx); 
             
             //Data
             var dataset;
@@ -33,24 +36,27 @@
                 scatterplot();
             });
 
-
-
             var scatterplot = function() {
+
+                var header = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", m);
 
                 var svg = d3.select("body")
                     .append("svg")
                     .attr("width", w)
-                    .attr("height", h);
+                    .attr("height", hf);
 
                 var xScale = d3.scale.linear()
                     .domain([d3.min(dataset, function(d) { return d.x; }),
                             d3.max(dataset, function(d) { return d.x; })])
-                    .range([0, w-150]);
+                    .range([pad, w-pad]);
 
                 var yScale = d3.scale.linear()
                     .domain([d3.min(dataset, function(d) { return d.y; }),
                             d3.max(dataset, function(d) { return d.y; })])
-                    .range([h-150, 0]);
+                    .range([h-pad, pad]);
 
                 var colScaleX = d3.scale.linear()
                     .domain([d3.min(dataset, function(d) { return d.bio1; }),
@@ -65,25 +71,25 @@
                 var xScaleClim = d3.scale.linear()
                     .domain([d3.min(dataset, function(d) { return d.bio1; }),
                             d3.max(dataset, function(d) { return d.bio1; })])
-                    .range([w/2-h/2, w/2+h/2]);
+                    .range([pad, w-pad]);
 
                 var yScaleClim = d3.scale.linear()
                     .domain([d3.min(dataset, function(d) { return d.bio12; }),
                             d3.max(dataset, function(d) { return d.bio12; })])
-                    .range([h, 0]);
+                    .range([hf-pad, pad]);
 
-                var button1 = svg.append("ellipse")
-                    .attr("cx", w - 75)
-                    .attr("cy", 75)
-                    .attr("rx", 50)
-                    .attr("ry", 50)
+                var button1 = header.append("ellipse")
+                    .attr("cx", w/2 - 35)
+                    .attr("cy", m/2)
+                    .attr("rx", 30)
+                    .attr("ry", 30)
                     .attr("fill", "rgba(0,0,0,.1)");
 
-                var button2 = svg.append("ellipse")
-                    .attr("cx", w - 75)
-                    .attr("cy", 150)
-                    .attr("rx", 50)
-                    .attr("ry", 50)
+                var button2 = header.append("ellipse")
+                    .attr("cx", w/2 + 35)
+                    .attr("cy", m/2)
+                    .attr("rx", 30)
+                    .attr("ry", 30)
                     .attr("fill", "rgba(0,0,0,.1)");
 
                 var id = function(d) {
@@ -105,7 +111,7 @@
                         return d.geoColor;
                     })
                     .attr("r", function(d) {
-                        return 4;
+                        return Math.ceil((w - 2 * pad)/xpx);
                     });
 
                 var stateChange = function(){
